@@ -591,6 +591,10 @@ module Beam =
                 do! ErlangPrinter.run writer erlModule
         }
 
+module WasmGc =
+    let compileFile (com: Compiler) (cliArgs: CliArgs) _pathResolver isSilent (outPath: string) =
+        Fable.Transforms.WasmGc.WasmGcPipeline.compileFile com cliArgs.ProjectFile isSilent outPath
+
 let compileFile (com: Compiler) (cliArgs: CliArgs) pathResolver isSilent (outPath: string) =
     match com.Options.Language with
     | JavaScript
@@ -600,3 +604,4 @@ let compileFile (com: Compiler) (cliArgs: CliArgs) pathResolver isSilent (outPat
     | Dart -> Dart.compileFile com cliArgs pathResolver isSilent outPath
     | Rust -> Rust.compileFile com cliArgs pathResolver isSilent outPath
     | Beam -> Beam.compileFile com cliArgs pathResolver isSilent outPath
+    | WasmGc -> WasmGc.compileFile com cliArgs pathResolver isSilent outPath

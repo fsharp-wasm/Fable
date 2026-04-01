@@ -969,7 +969,8 @@ module Helpers =
         | Rust -> true // always
         | Php
         | Dart
-        | Beam -> false
+        | Beam
+        | WasmGc -> false
 
     let isModuleValueForCalls com (declaringEntity: FSharpEntity) (memb: FSharpMemberOrFunctionOrValue) =
         declaringEntity.IsFSharpModule

@@ -89,7 +89,8 @@ let createMutablePublicValue (com: ICompiler) value =
     | Rust
     | Php
     | Dart
-    | Beam -> value
+    | Beam
+    | WasmGc -> value
 
 let getRefCell (com: ICompiler) r typ (expr: Expr) =
     match com.Options.Language with

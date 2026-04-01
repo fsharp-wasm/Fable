@@ -598,9 +598,14 @@ and FableCompiler(checker: InteractiveChecker, projCracked: ProjectCracked, fabl
                         // It seems when there's a pair .fsi/.fs the F# compiler gives the .fsi extension to the implementation file
                         let fileName = file.FileName |> Path.normalizePath |> Path.ensureFsExtension
 
-                        // For Rust, delay last file's compilation so other files can finish compiling
-                        if
+                        // For Rust and WasmGc, delay last file's compilation so other files can finish compiling.
+                        // WasmGc uses a shared accumulation context (sharedCtxs in WasmGcPipeline) that requires
+                        // all prior files to be fully processed before the last file emits the final module.
+                        let isLastFileDelayLang =
                             projCracked.CliArgs.CompilerOptions.Language = Rust
+                            || projCracked.CliArgs.CompilerOptions.Language = WasmGc
+                        if
+                            isLastFileDelayLang
                             && fileName = Array.last state.FilesToCompile
                             && state.FableFilesCompiledCount < state.FableFilesToCompileExpectedCount - 1
                         then

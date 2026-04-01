@@ -17,6 +17,7 @@ type Language =
     | Dart
     | Rust
     | Beam
+    | WasmGc
 
     override this.ToString() =
         match this with
@@ -27,6 +28,7 @@ type Language =
         | Dart -> "Dart"
         | Rust -> "Rust"
         | Beam -> "Beam"
+        | WasmGc -> "WasmGc"
 
 type CompilerOptions =
     {

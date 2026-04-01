@@ -197,6 +197,8 @@ let argLanguage (args: CliArgs) =
         | "rust" -> Ok Rust
         | "beam"
         | "erlang" -> Ok Beam
+        | "wasmgc"
+        | "wasm" -> Ok WasmGc
         | unknown ->
             let errorMessage =
                 [
@@ -323,6 +325,7 @@ type Runner =
                         | TypeScript -> "FABLE_COMPILER_TYPESCRIPT"
                         | JavaScript -> "FABLE_COMPILER_JAVASCRIPT"
                         | Beam -> "FABLE_COMPILER_BEAM"
+                        | WasmGc -> "FABLE_COMPILER_WASMGC"
                     ]
                 |> List.distinct
 
@@ -469,6 +472,7 @@ let getStatus =
     | Dart -> "beta"
     | Php -> "experimental"
     | Beam -> "alpha"
+    | WasmGc -> "experimental"
 
 let getLibPkgVersion =
     function
@@ -478,7 +482,8 @@ let getLibPkgVersion =
     | Rust
     | Dart
     | Php
-    | Beam -> None
+    | Beam
+    | WasmGc -> None
 
 let private logPrelude commands language =
     match commands with
