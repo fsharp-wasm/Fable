@@ -2,6 +2,46 @@
 
 This file provides guidance to AI coding agents when working with code in this repository.
 
+## fsharp-wasm fork policy
+
+This repository is the fsharp-wasm organisation's fork of **[fable-compiler/Fable](https://github.com/fable-compiler/Fable)**. It exists so that [fsharp-wasm](https://github.com/fsharp-wasm/fsharp-wasm) can pin an exact revision of the Fable front end (F# AST to Fable AST) that the WasmGC back end is built on, and so that our changes stay mergeable with upstream. Read this before you touch a branch.
+
+### Branches
+
+| branch | what it is | rules |
+|---|---|---|
+| `main` | a mirror of upstream's `main` | only ever fast-forwarded from upstream. **Never commit here.** |
+| `develop` | **our branch**: upstream plus the changes below | what fsharp-wasm pins (the submodule points at a commit of this branch). Merge `main` into it to take upstream's changes. |
+
+Those are the only two long-lived branches. A change that belongs upstream is a short-lived topic branch cut from `main` for a pull request to [fable-compiler/Fable](https://github.com/fable-compiler/Fable); delete it when it is merged or closed. Nothing else is kept.
+
+### Taking upstream's changes
+
+```bash
+git remote add upstream https://github.com/fable-compiler/Fable.git      # once
+git fetch upstream
+git checkout main && git merge --ff-only upstream/main && git push origin main
+git checkout develop && git merge main      # a merge, not a rebase: the commits that fsharp-wasm pins keep their SHAs
+# resolve conflicts, build, run the tests, then
+git push origin develop
+```
+
+After a merge, bump the submodule pin in fsharp-wasm (and in the repositories that pin this fork) to the new `develop` commit, in a commit of its own.
+
+### What we change
+
+- **The WasmGC language target** (`--lang wasmgc`) and the packaging that ships the Fable libraries for it.
+- Parts of upstream that the WasmGC back end does not use were removed (`lib/fcs`, the standalone build, the Fable libraries of other targets); do not bring them back.
+- CI on current action versions (Node 24).
+
+Keep our changes small and isolated, and say in the commit message why a change is ours and not upstream's. Do not rewrite upstream's history, and never rewrite `main`. Upstream's licence (MIT) and headers stay as they are; the fork's own files are under the same licence.
+
+### Where this is going
+
+Far in the future, **not now**: slim this compiler down to a pure language core and let it evolve — with features from [Lean](https://lean-lang.org/) such as type classes by dictionary passing, stronger do-notation, compile-time evaluation and termination checking — into a language of our own. Nothing in this repository works towards that yet; it is written down so that nobody mistakes the fork for the plan. Until then the rule above holds: small changes, mergeable with upstream.
+
+---
+
 ## Project Overview
 
 Fable is an F# to multi-language compiler that transpiles F# code to JavaScript, TypeScript, Python, Rust, Dart, PHP, and Erlang/BEAM. It uses a fork of F# Compiler Services (FCS) with custom tweaks, located in `lib/fcs`.
