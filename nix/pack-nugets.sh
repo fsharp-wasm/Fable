@@ -48,7 +48,7 @@ if [[ ! $version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ 
   exit 1
 fi
 
-repo_slug=${GITHUB_REPOSITORY:-aiqs4/Fable}
+repo_slug=${GITHUB_REPOSITORY:-fsharp-wasm/Fable}
 repo_url="https://github.com/${repo_slug}"
 
 projects=(
@@ -100,7 +100,7 @@ PY
   done
 fi
 if [[ $missing -ne 0 ]]; then
-  echo "error: this checkout cannot be packed. Commit the missing sources (feature/wasmgc-backend is missing the language-backend files Fable.Transforms still compiles)." >&2
+  echo "error: this checkout cannot be packed. Commit the missing sources (develop is missing the language-backend files Fable.Transforms still compiles)." >&2
   exit 1
 fi
 
@@ -116,7 +116,7 @@ common=(
   -p:SatelliteResourceLanguages=en
   -p:RepositoryUrl="$repo_url"
   -p:RepositoryType=git
-  -p:RepositoryBranch=feature/wasmgc-backend
+  -p:RepositoryBranch=develop
   -p:PackageProjectUrl="$repo_url"
   -p:FableCoreOnly=true
   -p:FableCoreNet10=true
@@ -159,7 +159,7 @@ EOF
 
 cat >"$out/README.txt" <<EOF
 Fable WasmGC NuGet ${version}
-Source: ${repo_url} @ ${full_sha:-unknown} (feature/wasmgc-backend)
+Source: ${repo_url} @ ${full_sha:-unknown} (develop)
 
 Download
   gh release download wasmgc-nuget --repo ${repo_slug} --pattern '*.nupkg' --dir nugets

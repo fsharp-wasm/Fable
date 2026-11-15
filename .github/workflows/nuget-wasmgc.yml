@@ -1,12 +1,10 @@
 # Packs Fable.AST, Fable.Transforms, Fable.Transforms.Global and Fable.Compiler
 # (plus Rust.AST when that project is in the tree) and publishes the .nupkg
-# files as a GitHub Release. Runs only for pushes to feature/wasmgc-backend.
+# files as a GitHub Release. Run it by hand (Actions → Run workflow, on develop): it publishes a release, so it does not run on every push.
 name: NuGet artifacts (wasmgc)
 
 on:
-  push:
-    branches:
-      - feature/wasmgc-backend
+  workflow_dispatch:
 
 permissions:
   contents: write

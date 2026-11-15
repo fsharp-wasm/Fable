@@ -1,5 +1,5 @@
 {
-  description = "Pack aiqs4/Fable (feature/wasmgc-backend) as downloadable NuGet packages";
+  description = "Pack fsharp-wasm/Fable (develop) as downloadable NuGet packages";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
